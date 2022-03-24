@@ -1,0 +1,22 @@
+name: Extendor
+version: '${project.version}'
+main: yuncore.extendor.Extendor
+api-version: 1.18
+prefix: Extendor
+load: STARTUP
+authors: [ Yunitrish ]
+description: extend and fix minecraft
+
+commands:
+  SetChat:
+    description: set custom name
+    usage: /<command> <color/name> <costom color/custom name>
+  home:
+    description: home operations
+    usage: /<command> <set/remove/to/list> <name/>
+  Open_To:
+    description: open permission to player
+    usage: /<command> <add/remove> <player>
+  to:
+    description: teleport to player
+    usage: /<command> <player>
