@@ -14,8 +14,6 @@ import yuncore.extendor.recipes.*;
 import yuncore.extendor.sethome.HomeConfiguration;
 import yuncore.extendor.sethome.commands.home;
 import yuncore.extendor.sethome.commands.homeTabComplete;
-import yuncore.extendor.to.commands.to;
-import yuncore.extendor.to.commands.toTabComplete;
 
 import java.util.Objects;
 
@@ -32,11 +30,11 @@ public final class Extendor extends JavaPlugin {
 
         HomeConfiguration.initialize();
 
-        System.out.println(ChatColor.GOLD + "Extendor V1.3");
         wood_fix.init();
         extra_tools.init();
         extra_foods.init();
         extra_materials.init();
+
         getServer().getPluginManager().registerEvents(new OnPlayerGetItem(),this);
         getServer().getPluginManager().registerEvents(new OnPlayerJoin(),this);
         getServer().getPluginManager().registerEvents(new OnPlayerChat(),this);
@@ -51,8 +49,6 @@ public final class Extendor extends JavaPlugin {
         Objects.requireNonNull(getCommand("home")).setTabCompleter(new homeTabComplete());
         Objects.requireNonNull(getCommand("open_to")).setExecutor(new OpenTo());
         Objects.requireNonNull(getCommand("open_to")).setTabCompleter(new OpenToTabComplete());
-        Objects.requireNonNull(getCommand("to")).setExecutor(new to());
-        Objects.requireNonNull(getCommand("to")).setTabCompleter(new toTabComplete());
 
     }
 

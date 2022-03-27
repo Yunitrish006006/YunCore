@@ -15,7 +15,7 @@ public class homeTabComplete implements TabCompleter {
         if(sender instanceof Player) {
             if(args.length == 1) {
                 List<String> options = new ArrayList<>();
-                options.add("home");
+                options.add("to");
                 options.add("set");
                 options.add("remove");
                 options.add("death");
@@ -24,7 +24,7 @@ public class homeTabComplete implements TabCompleter {
                 return options;
             }
             else if(args.length == 2) {
-                if(args[0].equalsIgnoreCase("home") || args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("remove")) {
+                if(args[0].equalsIgnoreCase("to") || args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("remove")) {
                     return HomeConfiguration.getHomeNames((Player) sender);
                 }
                 else if(args[0].equalsIgnoreCase("player")){

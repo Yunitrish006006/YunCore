@@ -33,7 +33,7 @@ public class home implements CommandExecutor {
                     player.sendMessage(ChatColor.GOLD + "Set " + args[1] + " at" + "\n" + HomeConfiguration.getLocationInformation(player));
                     return true;
                 }
-                else if (args[0].equalsIgnoreCase("home")) {
+                else if (args[0].equalsIgnoreCase("to")) {
                     HomeConfiguration.toHome(player,args[1]);
                     return true;
                 }
