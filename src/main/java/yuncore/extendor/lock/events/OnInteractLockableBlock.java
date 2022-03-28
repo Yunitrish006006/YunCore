@@ -1,6 +1,7 @@
 package yuncore.extendor.lock.events;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.TileState;
 import org.bukkit.entity.Player;
@@ -44,10 +45,17 @@ public class OnInteractLockableBlock implements Listener {
     @EventHandler
     public void onPlace(BlockPlaceEvent event) {
         if(!(event.getBlock().getState() instanceof TileState)) return;
-        TileState state = (TileState) event.getBlock().getState();
-        state.getPersistentDataContainer().set(Methods.lockor(),new LockDataType(),new Lockor(event.getPlayer()));
-        state.update();
-        event.getPlayer().sendTitle(" ",ChatColor.GOLD + Objects.requireNonNull(state.getPersistentDataContainer().get(Methods.lockor(), new LockDataType())).getMode().toLowerCase(Locale.ROOT),10,10,10);
+        if(Methods.isSign(event.getBlock()))
+        {
+            event.getPlayer().sendMessage("not sign");
+            TileState state = (TileState) event.getBlock().getState();
+            state.getPersistentDataContainer().set(Methods.lockor(),new LockDataType(),new Lockor(event.getPlayer()));
+            state.update();
+            event.getPlayer().sendTitle(" ",ChatColor.GOLD + Objects.requireNonNull(state.getPersistentDataContainer().get(Methods.lockor(), new LockDataType())).getMode().toLowerCase(Locale.ROOT),10,10,10);
+        }
+        else {
+            event.getPlayer().sendMessage("is sign");
+        }
     }
 
     @EventHandler
