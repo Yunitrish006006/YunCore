@@ -60,7 +60,8 @@ public class HomeConfiguration {
         fileConfiguration.set(player.getUniqueId() + "." + name + ".yaw",player.getLocation().getYaw());
         fileConfiguration.set(player.getUniqueId() + "." + name + ".pitch",player.getLocation().getPitch());
         HomeConfiguration.save();
-    }@Nonnull
+    }
+    @Nonnull
     public static Location getHome(Player player, String name) {
         if(fileConfiguration.get(player.getUniqueId()+"."+name)==null) {
             player.sendMessage(ChatColor.RED + "can not found " + ChatColor.GOLD + "\"" + name + "\"");
