@@ -1,4 +1,4 @@
-package yuncore.extendor.lock.events;
+package yuncore.extendor.lock;
 
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
@@ -9,9 +9,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import yuncore.extendor.Extendor;
-import yuncore.extendor.lock.LockDataType;
-import yuncore.extendor.lock.Lockor;
-import yuncore.extendor.lock.Methods;
 
 import java.util.Arrays;
 import java.util.Objects;

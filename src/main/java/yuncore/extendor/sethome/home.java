@@ -1,4 +1,4 @@
-package yuncore.extendor.sethome.commands;
+package yuncore.extendor.sethome;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
