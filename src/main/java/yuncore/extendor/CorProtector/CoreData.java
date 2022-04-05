@@ -110,6 +110,26 @@ public class CoreData {
         CoreData.save();
     }
     //
+    public void reloadCore() {
+        Owner = UUID.fromString(Objects.requireNonNull(fileConfiguration.getString(OwnerName + ".Owner")));
+        active = fileConfiguration.getBoolean(OwnerName + ".Active");
+        Height = fileConfiguration.getInt(OwnerName + ".Height");
+        Deep = fileConfiguration.getInt(OwnerName + ".Deep");
+        Range = fileConfiguration.getInt(OwnerName + ".Range");
+        world = Bukkit.getWorld(Objects.requireNonNull(fileConfiguration.getString(OwnerName + ".World")));
+        x = fileConfiguration.getDouble(OwnerName + ".X");
+        y = fileConfiguration.getDouble(OwnerName + ".Y");
+        z = fileConfiguration.getDouble(OwnerName + ".Z");
+        CoreHealth = fileConfiguration.getDouble(OwnerName + ".CoreHealth");
+        CoreEnergy = fileConfiguration.getDouble(OwnerName + ".CoreEnergy");
+        CoreShield = fileConfiguration.getDouble(OwnerName + ".CoreShield");
+        List<UUID> uuids = new ArrayList<>();
+        for(int i=0;i<fileConfiguration.getStringList(OwnerName + ".Group").size();i++) {
+            uuids.add(UUID.fromString(fileConfiguration.getStringList(OwnerName + ".Group").get(i)));
+        }
+        Group = uuids;
+        CoreData.save();
+    }
     public static void setCore(Block block, Player owner, String name) {
         fileConfiguration.set(name + ".Owner",owner.getUniqueId().toString());
         fileConfiguration.set(name + ".Active",false);
@@ -146,13 +166,14 @@ public class CoreData {
     public boolean getActive(){
         return active;
     }
-    public void setActive() {
-        active = !active;
-        for (Player p : Bukkit.getOnlinePlayers()){p.playSound(core.getLocation().add(0,1,0), Sound.UI_BUTTON_CLICK,0.1f,1.0f);}
-        Lightable lightable = (Lightable) core.getBlockData();
-        lightable.setLit(active);
-        core.setBlockData(lightable);
+    public void setActive(boolean value) {
+        active = value;
         refreshCore();
+        reloadCore();
+        Lightable lightable = (Lightable) core.getBlockData();
+        lightable.setLit(value);
+        core.setBlockData(lightable);
+        for (Player p : Bukkit.getOnlinePlayers()){p.playSound(core.getLocation().add(0,1,0), Sound.UI_BUTTON_CLICK,0.1f,1.0f);}
     }
     public UUID getOwner() {
         return Owner;
@@ -171,8 +192,7 @@ public class CoreData {
         return result;
     }
     public void addGroup(Player player) {
-        List<UUID> temp = getGroup();
-        temp.add(player.getUniqueId());
+        getGroup().add(player.getUniqueId());
         refreshCore();
     }
     public void removeGroup(Player player) {

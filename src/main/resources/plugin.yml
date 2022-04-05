@@ -17,6 +17,6 @@ commands:
   Open_To:
     description: open permission to player
     usage: /<command> <add/remove> <player>
-#  Core:
-#    description: add player to Group
-#    usage: /<command> <add/remove/clear> <player>
+  Core:
+    description: add player to Group
+    usage: /<command> <add/remove/clear> <player>

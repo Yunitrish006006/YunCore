@@ -19,7 +19,6 @@ import yuncore.extendor.recipes.wrapper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 public class BlockModifyInArea implements Listener {
     @EventHandler
@@ -32,9 +31,14 @@ public class BlockModifyInArea implements Listener {
         }
         else {
             Bukkit.broadcastMessage("________________________________");
-            Bukkit.broadcastMessage("active: " + coreData.getActive());
-            Bukkit.broadcastMessage("isInCoreArea: " + CoreData.isInCoreArea(block));
-            Bukkit.broadcastMessage("isOwner: " + coreData.getOwner().equals(player.getUniqueId()));
+            try {
+                Bukkit.broadcastMessage("active: " + coreData.getActive());
+                Bukkit.broadcastMessage("isInCoreArea: " + CoreData.isInCoreArea(block));
+                Bukkit.broadcastMessage("isOwner: " + coreData.getOwner().equals(player.getUniqueId()));
+            }
+            catch (Exception exception){
+                Bukkit.broadcastMessage("ERROR");
+            }
         }
     }
     @EventHandler
@@ -60,68 +64,71 @@ public class BlockModifyInArea implements Listener {
     }
     @EventHandler
     public void onHammered(PlayerInteractEvent event) {
-        if(!(event.hasBlock() && itemStack_in.isItemStackIn(event.getItem(), wrapper.hammers()) && !event.getPlayer().isSneaking() && event.getAction() == Action.RIGHT_CLICK_BLOCK)) return;
         Player player = event.getPlayer();
-        if(event.hasBlock()) {
-            Block block = event.getClickedBlock();
-            if(block.getType().equals(Material.REDSTONE_LAMP)) {
-                Inventory CoreGUI = Bukkit.createInventory(player,36,ChatColor.GOLD + "Core");
-                CoreData coreData = new CoreData(block);
-                //
-                ItemStack information = new ItemStack(Material.BOOK);
-                ItemMeta information_meta = information.getItemMeta();
-                information_meta.setDisplayName(ChatColor.RESET + "" + ChatColor.GREEN + "資訊");
-                information_meta.setLocalizedName("CoreGUI.information");
-                List<String> information_lore = new ArrayList<>();
-                information_lore.add(ChatColor.GOLD + "Owner: " + ChatColor.WHITE + coreData.getOwnerName());
-                information_lore.add(ChatColor.GOLD + "Active: " + ChatColor.WHITE + coreData.getActive());
-                information_lore.add(ChatColor.GOLD + "World: " + ChatColor.WHITE +  coreData.getWorld().getName());
-                information_lore.add(ChatColor.GOLD + "Location: " + ChatColor.RED + coreData.getX() + " " + ChatColor.GREEN + coreData.getY() + " " + ChatColor.BLUE + coreData.getZ());
-                information_lore.add(ChatColor.GOLD + "Height: " + ChatColor.WHITE +  coreData.getHeight());
-                information_lore.add(ChatColor.GOLD + "Deep: " + ChatColor.WHITE +  coreData.getDeep());
-                information_lore.add(ChatColor.GOLD + "Range: " + ChatColor.WHITE +  coreData.getRange());
-                information_lore.add(ChatColor.GOLD + "Health: " + ChatColor.WHITE +  coreData.getCoreHealth());
-                information_lore.add(ChatColor.GOLD + "Energy: " + ChatColor.WHITE +  coreData.getCoreEnergy());
-                information_lore.add(ChatColor.GOLD + "Shield: " + ChatColor.WHITE +  coreData.getCoreShield());
-                information_lore.add(ChatColor.GOLD + "Group: " + ChatColor.WHITE +  coreData.getGroupName().toString());
-                information_meta.setLore(information_lore);
-                information.setItemMeta(information_meta);
-                //
-                ItemStack pickup = new ItemStack(Material.WOODEN_PICKAXE);
-                ItemMeta pickup_meta = pickup.getItemMeta();
-                pickup_meta.setDisplayName(ChatColor.RESET + "" + ChatColor.GREEN + "收回");
-                pickup_meta.setLocalizedName("CoreGUI.pickup");
-                pickup.setItemMeta(pickup_meta);
-                //
-                ItemStack active = new ItemStack(Material.LEVER);
-                ItemMeta active_meta = active.getItemMeta();
-                active_meta.setDisplayName(ChatColor.RESET + "" + ChatColor.GREEN + "開關");
-                active_meta.setLocalizedName("CoreGUI.active");
-                List<String> active_lore = new ArrayList<>();
-                if(coreData.getActive()) {active_lore.add(ChatColor.GREEN + "on");}
-                else {active_lore.add(ChatColor.RED + "off");}
-                active_meta.setLore(active_lore);
-                active.setItemMeta(active_meta);
-                //
-                ItemStack add = new ItemStack(Material.EMERALD);
-                ItemMeta add_meta = add.getItemMeta();
-                add_meta.setDisplayName(ChatColor.RESET + "" + ChatColor.GREEN + "Add");
-                add_meta.setLocalizedName("CoreGUI.add");
-                add.setItemMeta(add_meta);
-                //
-                ItemStack remove = new ItemStack(Material.REDSTONE);
-                ItemMeta remove_meta = add.getItemMeta();
-                remove_meta.setDisplayName(ChatColor.RESET + "" + ChatColor.RED + "Remove");
-                remove_meta.setLocalizedName("CoreGUI.remove");
-                remove.setItemMeta(remove_meta);
-                //
-                CoreGUI.setItem(0,active);
-                CoreGUI.setItem(2,pickup);
-                CoreGUI.setItem(6,add);
-                CoreGUI.setItem(8,remove);
-                CoreGUI.setItem(13,information);
-                player.openInventory(CoreGUI);
-            }
+        if(!(event.hasBlock() && itemStack_in.isItemStackIn(event.getItem(), wrapper.hammers()) && event.hasBlock())) return;
+        Block block = event.getClickedBlock();
+        if(!block.getType().equals(Material.REDSTONE_LAMP)) return;
+        if(!player.isSneaking() && event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            Inventory CoreGUI = Bukkit.createInventory(player,36,ChatColor.GOLD + "Core");
+            CoreData coreData = new CoreData(block);
+            //
+            ItemStack information = new ItemStack(Material.BOOK);
+            ItemMeta information_meta = information.getItemMeta();
+            information_meta.setDisplayName(ChatColor.RESET + "" + ChatColor.GREEN + "資訊");
+            information_meta.setLocalizedName("CoreGUI.information");
+            List<String> information_lore = new ArrayList<>();
+            information_lore.add(ChatColor.GOLD + "Owner: " + ChatColor.WHITE + coreData.getOwnerName());
+            information_lore.add(ChatColor.GOLD + "Active: " + ChatColor.WHITE + coreData.getActive());
+            information_lore.add(ChatColor.GOLD + "World: " + ChatColor.WHITE +  coreData.getWorld().getName());
+            information_lore.add(ChatColor.GOLD + "Location: " + ChatColor.RED + coreData.getX() + " " + ChatColor.GREEN + coreData.getY() + " " + ChatColor.BLUE + coreData.getZ());
+            information_lore.add(ChatColor.GOLD + "Height: " + ChatColor.WHITE +  coreData.getHeight());
+            information_lore.add(ChatColor.GOLD + "Deep: " + ChatColor.WHITE +  coreData.getDeep());
+            information_lore.add(ChatColor.GOLD + "Range: " + ChatColor.WHITE +  coreData.getRange());
+            information_lore.add(ChatColor.GOLD + "Health: " + ChatColor.WHITE +  coreData.getCoreHealth());
+            information_lore.add(ChatColor.GOLD + "Energy: " + ChatColor.WHITE +  coreData.getCoreEnergy());
+            information_lore.add(ChatColor.GOLD + "Shield: " + ChatColor.WHITE +  coreData.getCoreShield());
+            information_lore.add(ChatColor.GOLD + "Group: " + ChatColor.WHITE +  coreData.getGroupName().toString());
+            information_meta.setLore(information_lore);
+            information.setItemMeta(information_meta);
+            //
+            ItemStack pickup = new ItemStack(Material.WOODEN_PICKAXE);
+            ItemMeta pickup_meta = pickup.getItemMeta();
+            pickup_meta.setDisplayName(ChatColor.RESET + "" + ChatColor.GREEN + "收回");
+            pickup_meta.setLocalizedName("CoreGUI.pickup");
+            pickup.setItemMeta(pickup_meta);
+            //
+            ItemStack active = new ItemStack(Material.LEVER);
+            ItemMeta active_meta = active.getItemMeta();
+            active_meta.setDisplayName(ChatColor.RESET + "" + ChatColor.GREEN + "開關");
+            active_meta.setLocalizedName("CoreGUI.active");
+            List<String> active_lore = new ArrayList<>();
+            if(coreData.getActive()) {active_lore.add(ChatColor.GREEN + "on");}
+            else {active_lore.add(ChatColor.RED + "off");}
+            active_meta.setLore(active_lore);
+            active.setItemMeta(active_meta);
+            //
+            ItemStack add = new ItemStack(Material.EMERALD);
+            ItemMeta add_meta = add.getItemMeta();
+            add_meta.setDisplayName(ChatColor.RESET + "" + ChatColor.GREEN + "Add");
+            add_meta.setLocalizedName("CoreGUI.add");
+            add.setItemMeta(add_meta);
+            //
+            ItemStack remove = new ItemStack(Material.REDSTONE);
+            ItemMeta remove_meta = add.getItemMeta();
+            remove_meta.setDisplayName(ChatColor.RESET + "" + ChatColor.RED + "Remove");
+            remove_meta.setLocalizedName("CoreGUI.remove");
+            remove.setItemMeta(remove_meta);
+            //
+            CoreGUI.setItem(0,active);
+            CoreGUI.setItem(2,pickup);
+            CoreGUI.setItem(6,add);
+            CoreGUI.setItem(8,remove);
+            CoreGUI.setItem(13,information);
+            player.openInventory(CoreGUI);
+        }
+        if(player.isSneaking() && event.getAction() == Action.LEFT_CLICK_BLOCK) {
+            CoreData coreData = new CoreData(block);
+            coreData.setActive(!coreData.getActive());
         }
     }
     @EventHandler
@@ -146,7 +153,7 @@ public class BlockModifyInArea implements Listener {
                             }
                             break;
                         case "active":
-                            coreData.setActive();
+                            coreData.setActive(!coreData.getActive());
                             ItemMeta itemMeta = event.getCurrentItem().getItemMeta();
                             List<String> lore = itemMeta.getLore();
                             if(lore.get(0).equalsIgnoreCase(ChatColor.RED + "off")) {lore.set(0,ChatColor.GREEN + "on");}
