@@ -17,7 +17,7 @@ public class Core implements CommandExecutor {
             Player player = (Player) sender;
             Block block = player.getTargetBlock(null, 16);
             if(block.getType().equals(Material.REDSTONE_LAMP)){
-                CoreData coreData = new CoreData(block);
+                CoreData coreData = CoreData.getNearByCore(block);
                 if(args[0].equalsIgnoreCase("add")) {
                     coreData.addGroup(Objects.requireNonNull(Bukkit.getPlayer(args[1])));
                     player.sendMessage("add " + args[1] + " to Group");

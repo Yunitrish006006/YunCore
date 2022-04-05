@@ -10,7 +10,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 import yuncore.extendor.Extendor;
-import yuncore.extendor.sethome.HomeConfiguration;
 
 public class home implements CommandExecutor {
     @Override
@@ -69,6 +68,4 @@ public class home implements CommandExecutor {
         }
         return false;
     }
-
-
 }
