@@ -10,8 +10,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.scheduler.BukkitRunnable;
-import yuncore.extendor.Extendor;
+import org.bukkit.inventory.meta.ItemMeta;
 import yuncore.extendor.methods.itemStack_in;
 import yuncore.extendor.recipes.wrapper;
 
@@ -62,14 +61,9 @@ public class BlockModifyInArea implements Listener {
             player.openInventory(coreData.getCoreMenu(player));
         }
         if(player.isSneaking() && event.getAction() == Action.LEFT_CLICK_BLOCK) {
-            player.sendMessage("onHammer executed");
-            player.sendMessage("(before declared) Active: " + CoreData.getCurrentCore(block).getActive());
             CoreData coreData = CoreData.getCurrentCore(block);
-            player.sendMessage("(before set) Active: " + coreData.getActive());
             coreData.setActive((!coreData.getActive()));
-            player.sendMessage("(after set) Active: " + coreData.getActive());
             CoreData.save();
-            player.sendMessage("(after save) Active: " + coreData.getActive());
         }
     }
     @EventHandler
@@ -77,39 +71,41 @@ public class BlockModifyInArea implements Listener {
         if(event.getView().getTitle().equalsIgnoreCase(ChatColor.GOLD + "Core")) {
             if(event.getCurrentItem()==null) return;
             if(!event.getCurrentItem().hasItemMeta()) return;
-            if(!event.getCurrentItem().getItemMeta().hasLocalizedName()) return;
+            if(!Objects.requireNonNull(event.getCurrentItem().getItemMeta()).hasLocalizedName()) return;
             String[] ButtonName = event.getCurrentItem().getItemMeta().getLocalizedName().split("\\.");
             if(ButtonName[0].equalsIgnoreCase("CoreGUI")) {
                 Block block = event.getWhoClicked().getTargetBlock(null,10);
+                Player player = (Player) event.getWhoClicked();
                 if(block.getType().equals(Material.REDSTONE_LAMP)) {
-                    CoreData coreData = CoreData.getNearByCore(block);
-                    if(coreData!=null) {
-                        switch (ButtonName[1]) {
-                            case "pickup":
-                                if(coreData.getOwner().equals(event.getWhoClicked().getUniqueId())) {
-                                    block.breakNaturally();
-                                    coreData.deleteCore();
-                                    event.getView().close();
-                                }
-                                else {
-                                    event.getWhoClicked().sendMessage(ChatColor.RED + "You have no permission!");
-                                }
-                                break;
-                            case "active":
-                                coreData.setActive(!coreData.getActive());
-                                break;
-                            case "add":
-                                Objects.requireNonNull(Bukkit.getPlayer(event.getWhoClicked().getUniqueId())).playSound(event.getWhoClicked(),Sound.UI_BUTTON_CLICK,0.1f,1.0f);
-                                break;
-                            case "remove":
-                                Objects.requireNonNull(Bukkit.getPlayer(event.getWhoClicked().getUniqueId())).playSound(event.getWhoClicked(),Sound.UI_BUTTON_CLICK,0.1f,0.9f);
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                    else {
-                        Objects.requireNonNull(Bukkit.getPlayer(event.getWhoClicked().getUniqueId())).playSound(event.getWhoClicked(),Sound.BLOCK_ANVIL_BREAK,0.1f,0.9f);
+                    CoreData coreData = CoreData.getCurrentCore(block);
+                    switch (ButtonName[1]) {
+                        case "pickup":
+                            if(coreData.getOwner().equals(event.getWhoClicked().getUniqueId())) {
+                                block.breakNaturally();
+                                coreData.deleteCore();
+                                event.getView().close();
+                            }
+                            else {
+                                event.getWhoClicked().sendMessage(ChatColor.RED + "You have no permission!");
+                            }
+                            break;
+                        case "information":
+                            coreData.setActive(!coreData.getActive());
+                            break;
+                        case "active":
+                            ItemMeta itemMeta = event.getCurrentItem().getItemMeta();
+
+
+                            break;
+                        case "add":
+                            Objects.requireNonNull(Bukkit.getPlayer(event.getWhoClicked().getUniqueId())).playSound(event.getWhoClicked(), Sound.UI_BUTTON_CLICK,0.1f,1.0f);
+                            break;
+                        case "remove":
+                            Objects.requireNonNull(Bukkit.getPlayer(event.getWhoClicked().getUniqueId())).playSound(event.getWhoClicked(),Sound.UI_BUTTON_CLICK,0.1f,0.9f);
+                            break;
+                        default:
+                            player.sendMessage("not valid button!");
+                            break;
                     }
                 }
                 else {

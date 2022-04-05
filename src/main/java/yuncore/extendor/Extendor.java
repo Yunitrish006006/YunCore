@@ -1,10 +1,7 @@
 package yuncore.extendor;
 
 import org.bukkit.plugin.java.JavaPlugin;
-import yuncore.extendor.CorProtector.Core;
-import yuncore.extendor.CorProtector.CoreData;
-import yuncore.extendor.CorProtector.BlockModifyInArea;
-import yuncore.extendor.CorProtector.CoreTabComplete;
+import yuncore.extendor.CorProtector.*;
 import yuncore.extendor.PlayerChats.commands.SetChatTabComplete;
 import yuncore.extendor.PlayerChats.events.OnPlayerChat;
 import yuncore.extendor.PlayerChats.commands.SetChat;

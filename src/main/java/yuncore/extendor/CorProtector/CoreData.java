@@ -184,7 +184,7 @@ public class CoreData {
         }
     }
     public Inventory getCoreMenu(Player player) {
-        Inventory CoreGUI = Bukkit.createInventory(player,36,ChatColor.DARK_GRAY + "Core : " + OwnerName);
+        Inventory CoreGUI = Bukkit.createInventory(player,36,ChatColor.GOLD + "Core");
         //
         ItemStack information = new ItemStack(Material.BOOK);
         ItemMeta information_meta = information.getItemMeta();
