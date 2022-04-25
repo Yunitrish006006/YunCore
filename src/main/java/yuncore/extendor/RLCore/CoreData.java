@@ -1,4 +1,4 @@
-package yuncore.extendor.CorProtector;
+package yuncore.extendor.RLCore;
 
 import org.bukkit.*;
 import org.bukkit.block.Block;

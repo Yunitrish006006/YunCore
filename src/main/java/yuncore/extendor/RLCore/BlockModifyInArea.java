@@ -1,7 +1,7 @@
-package yuncore.extendor.CorProtector;
+package yuncore.extendor.RLCore;
 
 import org.bukkit.*;
-import org.bukkit.block.Block;
+import org.bukkit.block.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,20 +10,17 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.meta.ItemMeta;
 import yuncore.extendor.methods.itemStack_in;
 import yuncore.extendor.recipes.wrapper;
-
 import java.util.Objects;
-
 public class BlockModifyInArea implements Listener {
     @EventHandler
     public void OnPlayerBreakBlock(BlockBreakEvent event) {
         Player player = event.getPlayer();
         Block block = event.getBlock();
         CoreData coreData = CoreData.getNearByCore(block);
-        try { Bukkit.broadcastMessage(ChatColor.GOLD + "active: " + coreData.getActive() + "\nisInCoreArea: " + CoreData.isInCoreArea(block) + "\nisOwner: " + coreData.getOwner().equals(player.getUniqueId()));}
-        catch (Exception exception){ Bukkit.broadcastMessage("ERROR"); }
+//        try { Bukkit.broadcastMessage(ChatColor.GOLD + "active: " + coreData.getActive() + "\nisInCoreArea: " + CoreData.isInCoreArea(block) + "\nisOwner: " + coreData.getOwner().equals(player.getUniqueId()));}
+//        catch (Exception exception){ Bukkit.broadcastMessage("ERROR"); }
         if(CoreData.isInCoreArea(block) && coreData.getActive() && !(coreData.getOwner().equals(player.getUniqueId()))){
             event.setCancelled(true);
         }
@@ -42,7 +39,7 @@ public class BlockModifyInArea implements Listener {
         }
     }
     @EventHandler
-    public void OnCoreBreaked(BlockBreakEvent event) {
+    public void OnCoreDestroyed(BlockBreakEvent event) {
         Player player = event.getPlayer();
         Block block = event.getBlock();
         if(block.getType().equals(Material.REDSTONE_LAMP)) {
@@ -93,9 +90,6 @@ public class BlockModifyInArea implements Listener {
                             coreData.setActive(!coreData.getActive());
                             break;
                         case "active":
-                            ItemMeta itemMeta = event.getCurrentItem().getItemMeta();
-
-
                             break;
                         case "add":
                             Objects.requireNonNull(Bukkit.getPlayer(event.getWhoClicked().getUniqueId())).playSound(event.getWhoClicked(), Sound.UI_BUTTON_CLICK,0.1f,1.0f);

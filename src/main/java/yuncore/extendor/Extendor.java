@@ -1,7 +1,7 @@
 package yuncore.extendor;
 
 import org.bukkit.plugin.java.JavaPlugin;
-import yuncore.extendor.CorProtector.*;
+import yuncore.extendor.RLCore.*;
 import yuncore.extendor.PlayerChats.commands.SetChatTabComplete;
 import yuncore.extendor.PlayerChats.events.OnPlayerChat;
 import yuncore.extendor.PlayerChats.commands.SetChat;
@@ -45,6 +45,8 @@ public final class Extendor extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new OnPlayerFished(),this);
         getServer().getPluginManager().registerEvents(new OnPlayerDeath(),this);
         getServer().getPluginManager().registerEvents(new BlockModifyInArea(),this);
+        getServer().getPluginManager().registerEvents(new ExpBottleExtract(),this);
+        getServer().getPluginManager().registerEvents(new ExtraFoodsEvent(),this);
 
         Objects.requireNonNull(getCommand("SetChat")).setExecutor(new SetChat());
         Objects.requireNonNull(getCommand("SetChat")).setTabCompleter(new SetChatTabComplete());

@@ -41,6 +41,7 @@
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <outputFile>D:\Server\server\plugins\YunCore.jar</outputFile>
+                            <outputFile>C:\Users\thoma\Desktop\YunCore.jar</outputFile>
                         </configuration>
                     </execution>
                 </executions>

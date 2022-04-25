@@ -1,4 +1,4 @@
-package yuncore.extendor.CorProtector;
+package yuncore.extendor.RLCore;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
